@@ -26,7 +26,6 @@ const ModificarGalloModal = ({ open, onClose, galloId }) => {
             try {
                 const response = await axios.get(`/gallo/listar/${galloId}`);
                 const data = response.data;
-                console.log(gallo)
                 setGallo(data);
                 setFormData(data);
             } catch (error) {
@@ -36,6 +35,8 @@ const ModificarGalloModal = ({ open, onClose, galloId }) => {
 
         fetchGallo();
     }, [galloId]);
+
+    console.log(gallo)
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
