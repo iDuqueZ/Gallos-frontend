@@ -57,6 +57,44 @@ export default function DenseTable(b) {
     window.open('/combate', '_blank');
   };
 
+  const batallasOrdenadas = [...batallas];
+
+  batallasOrdenadas.sort((batallaA, batallaB) => {
+    const pesoAzulA = gallosDetalles.find((gallo) => gallo._id === batallaA.peleadorAzul)?.peso;
+    const pesoRojoA = gallosDetalles.find((gallo) => gallo._id === batallaA.peleadorRojo)?.peso;
+
+    const pesoAzulB = gallosDetalles.find((gallo) => gallo._id === batallaB.peleadorAzul)?.peso;
+    const pesoRojoB = gallosDetalles.find((gallo) => gallo._id === batallaB.peleadorRojo)?.peso;
+
+    // Verificar si los pesos azul y rojo de ambas batallas son iguales
+    if (pesoAzulA === pesoRojoA && pesoAzulB === pesoRojoB) {
+      return 0; // Mantener el orden original
+    }
+
+    // Verificar si la batalla A tiene gallos del mismo peso y la batalla B no
+    if (pesoAzulA === pesoRojoA && (pesoAzulB !== pesoRojoB || pesoAzulB === undefined || pesoRojoB === undefined)) {
+      return -1; // Mover la batalla A hacia arriba
+    }
+
+    // Verificar si la batalla B tiene gallos del mismo peso y la batalla A no
+    if ((pesoAzulA !== pesoRojoA || pesoAzulA === undefined || pesoRojoA === undefined) && pesoAzulB === pesoRojoB) {
+      return 1; // Mover la batalla B hacia arriba
+    }
+
+    // Verificar si ambos gallos azules tienen el mismo peso
+    if (pesoAzulA === pesoAzulB) {
+      return 0; // Mantener el orden original
+    }
+
+    // Verificar si el peso azul de la batalla A es menor al de la batalla B
+    if (pesoAzulA < pesoAzulB) {
+      return -1; // Mover la batalla A hacia arriba
+    }
+
+    // Mover la batalla B hacia arriba
+    return 1;
+  });
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
@@ -76,7 +114,7 @@ export default function DenseTable(b) {
         </TableHead>
 
         <TableBody>
-          {batallas.map((batalla, index) => {
+          {batallasOrdenadas.map((batalla, index) => {
             const peleadorAzul = gallosDetalles.find((gallo) => gallo._id === batalla.peleadorAzul);
             const peleadorRojo = gallosDetalles.find((gallo) => gallo._id === batalla.peleadorRojo);
 

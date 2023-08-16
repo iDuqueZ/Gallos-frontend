@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import Axios from 'axios';
 
-Axios.defaults.baseURL='https://backend-0oye.onrender.com/'
+Axios.defaults.baseURL='http://localhost:5000/'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

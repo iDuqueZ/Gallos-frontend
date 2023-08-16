@@ -40,7 +40,7 @@ const ModificarGalloModal = ({ open, onClose, galloId }) => {
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    }; 
 
     const handleGuardar = async () => {
         try {

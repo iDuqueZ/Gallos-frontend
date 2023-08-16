@@ -12,6 +12,8 @@ export default function Batallas() {
   const [batallas, setBatallas] = useState([]);
   const [gallosDetalles, setGallosDetalles] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [margenPeso, setMargenPeso] = useState(0); // Valor inicial puede ser 0
+
 
   useEffect(() => {
     const fetchBatallas = async () => {
@@ -134,38 +136,29 @@ export default function Batallas() {
   };
 
   const handleGenerar = async () => {
-
-    if (batallas.length === 0) {
       try {
         const idUser = sessionStorage.getItem('idUser');
-        const res = await axios.post(`/batalla/crearauto/${idUser}`);
+        const res = await axios.post(`/batalla/crearauto/${idUser}`, {
+          margenPeso: margenPeso,
+        });
         console.log(res);
-
+  
         new Noty({
           type: 'success',
-          text: 'Batallas generadas automaticamente',
+          text: 'Batallas generadas automáticamente',
           layout: 'bottomLeft',
-          timeout: 2500
+          timeout: 2500,
         }).show();
-
+  
         setTimeout(() => {
           window.location.reload(); // Recargar la página después de 1500ms
         }, 2500);
-
       } catch (error) {
-        console.error('Error al generar las batallas al dar click:', error);
+        console.error('Error al generar las batallas al dar clic:', error);
       }
-    }
-
-    else {
-      new Noty({
-        type: 'error',
-        text: 'Ya existen batallas generadas, debes borrarlas para volver a generar',
-        layout: 'bottomLeft',
-        timeout: 3500
-      }).show();
-    }
+    
   };
+  
 
   const handleBorrar = async () => {
 
@@ -194,14 +187,14 @@ export default function Batallas() {
     }
   };
 
-  
+
 
   const handleCancelarBatalla = () => {
     // Cierra el modal sin hacer nada
     setShowModal(false);
   };
 
-  const openModal = () =>{
+  const openModal = () => {
     setShowModal(true);
   }
 
@@ -216,6 +209,13 @@ export default function Batallas() {
             <Button style={{ marginRight: "10px" }} variant="outlined" color="warning" size="small" onClick={() => handleBorrar()}>
               Borrar batallas
             </Button>
+            <input
+              type="number"
+              value={margenPeso}
+              onChange={(e) => setMargenPeso(parseInt(e.target.value))}
+              placeholder="Margen de peso"
+              style={{ marginRight: '10px' }}
+            />
             <Button variant="outlined" color="success" size="small" onClick={() => handleGenerar()}>
               Generar
             </Button>
@@ -241,10 +241,10 @@ export default function Batallas() {
             Crear Batalla
           </Button>
           {/* Renderiza el modal si showModal es true */}
-            <ModalCrearBatalla
-              open= {showModal}
-              onClose={handleCancelarBatalla}
-            />
+          <ModalCrearBatalla
+            open={showModal}
+            onClose={handleCancelarBatalla}
+          />
         </div>
       </Container>
     </section>
