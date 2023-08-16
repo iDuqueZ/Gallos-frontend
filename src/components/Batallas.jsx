@@ -6,6 +6,7 @@ import ModalCrearBatalla from './ModalCrearBatalla'
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import Noty from 'noty';
+import TextField from '@mui/material/TextField';
 
 export default function Batallas() {
 
@@ -135,30 +136,35 @@ export default function Batallas() {
     ventanaImpresion.print();
   };
 
-  const handleGenerar = async () => {
-      try {
-        const idUser = sessionStorage.getItem('idUser');
-        const res = await axios.post(`/batalla/crearauto/${idUser}`, {
-          margenPeso: margenPeso,
-        });
-        console.log(res);
-  
-        new Noty({
-          type: 'success',
-          text: 'Batallas generadas automáticamente',
-          layout: 'bottomLeft',
-          timeout: 2500,
-        }).show();
-  
-        setTimeout(() => {
-          window.location.reload(); // Recargar la página después de 1500ms
-        }, 2500);
-      } catch (error) {
-        console.error('Error al generar las batallas al dar clic:', error);
-      }
-    
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleGenerar(); // Llama a la función de generación de batallas
   };
-  
+
+  const handleGenerar = async () => {
+    try {
+      const idUser = sessionStorage.getItem('idUser');
+      const res = await axios.post(`/batalla/crearauto/${idUser}`, {
+        margenPeso: parseFloat(margenPeso), // Usar parseFloat en lugar de parseInt
+      });
+      console.log(res);
+
+      new Noty({
+        type: 'success',
+        text: 'Batallas generadas automáticamente',
+        layout: 'bottomLeft',
+        timeout: 2500,
+      }).show();
+
+      setTimeout(() => {
+        window.location.reload(); // Recargar la página después de 1500ms
+      }, 2500);
+    } catch (error) {
+      console.error('Error al generar las batallas al dar clic:', error);
+    }
+  };
+
+
 
   const handleBorrar = async () => {
 
@@ -205,20 +211,23 @@ export default function Batallas() {
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <h1>Listado de Batallas</h1>
 
-          <div>
+          <div style={{display: 'flex'}}>
             <Button style={{ marginRight: "10px" }} variant="outlined" color="warning" size="small" onClick={() => handleBorrar()}>
               Borrar batallas
             </Button>
-            <input
-              type="number"
-              value={margenPeso}
-              onChange={(e) => setMargenPeso(parseInt(e.target.value))}
-              placeholder="Margen de peso"
-              style={{ marginRight: '10px' }}
-            />
-            <Button variant="outlined" color="success" size="small" onClick={() => handleGenerar()}>
-              Generar
-            </Button>
+            <form style={{display: 'flex', flexDirection: 'column'}} onSubmit={handleSubmit}>
+              <TextField
+                size='small'
+                label="Margen peso"
+                value={margenPeso}
+                onChange={(e) => setMargenPeso(e.target.value)}
+                placeholder="Margen de peso"
+                style={{ marginBottom: '10px' }}
+              />
+              <Button type="submit" variant="outlined" color="success" size="small">
+                Generar
+              </Button>
+            </form>
           </div>
 
         </div>
