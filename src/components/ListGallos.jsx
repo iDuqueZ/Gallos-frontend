@@ -65,11 +65,16 @@ export default function GallosList() {
         try {
             const response = await axios.delete(`/gallo/eliminar/${id}`);
             const data = response.data;
+            console.log(data)
 
             new Noty({
-                text: data,
+                text: "Gallo Eliminado con éxito",
+                type: 'success',
                 timeout: 1500
             }).show();
+
+            handleActualizar();
+
         } catch (error) {
             new Noty({
                 text: 'Error al eliminar gallo ' + error,
