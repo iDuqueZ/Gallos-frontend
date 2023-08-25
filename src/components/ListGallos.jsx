@@ -77,7 +77,7 @@ export default function GallosList() {
 
         } catch (error) {
             new Noty({
-                text: 'Error al eliminar gallo ' + error,
+                text: 'Error al eliminar gallo asegurate que no se encuentre en una batalla',
                 type: 'error',
                 timeout: 1500
             }).show();
