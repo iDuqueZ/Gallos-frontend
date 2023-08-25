@@ -71,9 +71,8 @@ export default function GallosList() {
                 timeout: 1500
             }).show();
         } catch (error) {
-            console.error('Error al eliminar el gallo:', error);
             new Noty({
-                text: 'Error al eliminar gallo',
+                text: 'Error al eliminar gallo ' + error,
                 type: 'error',
                 timeout: 1500
             }).show();

@@ -36,10 +36,7 @@ export default function Nuevo_Gallo() {
     };
 
     const handleGuardar = () => {
-        // Lógica para enviar la petición y guardar los datos del gallo
-        // Utiliza la librería Axios u otra similar para realizar la petición POST
-
-        // Ejemplo utilizando Axios
+  
         const token = sessionStorage.getItem('token');
         console.log(formData)
         axios.post(`/gallo/nuevo`, formData, {
