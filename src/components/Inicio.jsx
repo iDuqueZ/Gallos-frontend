@@ -28,7 +28,7 @@ function Login() {
                             <Card.Text>
                                 Registra los gallos de cada cuerda, cada uno con su nombre, ciudad de origen, color, peso y características únicas.
                             </Card.Text>
-                            <Button>1. Ir a Gallos</Button>
+                            <Button href='/gallos'>1. Ir a Gallos</Button>
                         </Card.Body>
                     </Card>
                     <Card>
@@ -37,7 +37,7 @@ function Login() {
                             <Card.Text>
                                 Genera de forma automatica y aleatoria las batallas según el peso de los gallos registrados.
                             </Card.Text>
-                            <Button variant="warning">2. Ir a Batallas</Button>
+                            <Button href='/batallas' variant="warning">2. Ir a Batallas</Button>
                         </Card.Body>
                     </Card>
                     <Card>
@@ -46,7 +46,7 @@ function Login() {
                             <Card.Text>
                                 Puedes consultar la tabla de calificaciones y los resultados finales de las batallas.
                             </Card.Text>
-                            <Button variant='success'>3. Ver resultados</Button>
+                            <Button href='/resumen' variant='success'>3. Ver resultados</Button>
                         </Card.Body>
                     </Card>
                 </CardGroup>
