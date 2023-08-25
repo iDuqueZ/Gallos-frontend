@@ -63,7 +63,7 @@ export default function GallosList() {
 
     const handleEliminar = async (id) => {
         try {
-            const response = await axios.get(`/gallo/eliminar/${id}`);
+            const response = await axios.delete(`/gallo/eliminar/${id}`);
             const data = response.data;
 
             new Noty({
