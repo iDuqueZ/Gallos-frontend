@@ -16,25 +16,44 @@ const GallosTable = () => {
       try {
         const idUser = sessionStorage.getItem('idUser');
         const response = await axios.get(`/gallo/listartodos/${idUser}`);
-        const gallosData = response.data.map((gallo) => {
-          const ganadas = gallo.ganadas || 0;
-          const tablas = gallo.tablas || 0;
-          const puntos = ganadas * 3 + tablas;
-          const tiempoPromedio = calcularTiempoPromedio(gallo.tiempo);
-          const totalTiempo = calcularTiempoTotal(gallo.tiempo);
+        const gallosData = {};
 
+        response.data.forEach((gallo) => {
+          const key = `${gallo.cuerda} ${gallo.frente}`;
+          if (!gallosData[key]) {
+            gallosData[key] = {
+              puntos: 0,
+              ganadas: 0,
+              tablas: 0,
+              perdidas: 0,
+              tiempo: [],
+            };
+          }
+
+          gallosData[key].puntos += (gallo.ganadas || 0) * 3 + (gallo.tablas || 0);
+          gallosData[key].ganadas += gallo.ganadas || 0;
+          gallosData[key].tablas += gallo.tablas || 0;
+          gallosData[key].perdidas += gallo.perdidas || 0;
+          gallosData[key].tiempo.push(...gallo.tiempo);
+        });
+
+        const gallosFormatted = Object.keys(gallosData).map((key) => {
+          const gallo = gallosData[key];
           return {
-            ...gallo,
-            puntos,
-            tiempoPromedio,
-            totalTiempo,
+            cuerdaFrente: key,
+            puntos: gallo.puntos,
+            ganadas: gallo.ganadas,
+            tablas: gallo.tablas,
+            perdidas: gallo.perdidas,
+            tiempoPromedio: calcularTiempoPromedio(gallo.tiempo),
+            totalTiempo: calcularTiempoTotal(gallo.tiempo),
           };
         });
 
         // Ordenar los gallos por cantidad de puntos (en orden descendente)
-        gallosData.sort((a, b) => b.puntos - a.puntos);
+        gallosFormatted.sort((a, b) => b.puntos - a.puntos);
 
-        setGallos(gallosData);
+        setGallos(gallosFormatted);
       } catch (error) {
         console.error('Error al obtener los datos de los gallos', error);
       }
@@ -44,7 +63,7 @@ const GallosTable = () => {
   }, []);
 
   const calcularTiempoPromedio = (tiempo) => {
-    if (tiempo && tiempo.length > 0) {
+    if (tiempo.length > 0) {
       const sumaTiempos = tiempo.reduce((total, t) => total + t, 0);
       const tiempoPromedio = sumaTiempos / tiempo.length;
       return tiempoPromedio;
@@ -54,7 +73,7 @@ const GallosTable = () => {
   };
 
   const calcularTiempoTotal = (tiempo) => {
-    if (tiempo && tiempo.length > 0) {
+    if (tiempo.length > 0) {
       const tiempoTotal = tiempo.reduce((total, t) => total + t, 0);
       return tiempoTotal;
     }
@@ -84,8 +103,8 @@ const GallosTable = () => {
         </TableHead>
         <TableBody>
           {gallos.map((gallo) => (
-            <TableRow key={gallo._id}>
-              <TableCell>{`${gallo.cuerda} ${gallo.frente}`}</TableCell>
+            <TableRow key={gallo.cuerdaFrente}>
+              <TableCell>{gallo.cuerdaFrente}</TableCell>
               <TableCell>{gallo.puntos}</TableCell>
               <TableCell>{gallo.ganadas}</TableCell>
               <TableCell>{gallo.tablas}</TableCell>

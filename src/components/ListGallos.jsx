@@ -61,10 +61,25 @@ export default function GallosList() {
         fetchData();
     };
 
-    const handleEliminar = (id) => {
-        // Lógica para ejecutar acción de eliminación
-        console.log('Eliminar gallo:', id);
+    const handleEliminar = async (id) => {
+        try {
+            const response = await axios.get(`/gallo/eliminar/${id}`);
+            const data = response.data;
+
+            new Noty({
+                text: data,
+                timeout: 1500
+            }).show();
+        } catch (error) {
+            console.error('Error al eliminar el gallo:', error);
+            new Noty({
+                text: 'Error al eliminar gallo',
+                type: 'error',
+                timeout: 1500
+            }).show();
+        }
     };
+    
 
     const handleImprimir = (id) => {
         const fetchGallo = async () => {
