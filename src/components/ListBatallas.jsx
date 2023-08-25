@@ -136,8 +136,9 @@ export default function DenseTable(b) {
                     size='small'
                     onClick={() => handleOpenCombate(batalla._id)}
                   >
-                    VS
+                    <img src="/lucha.png" alt="Lucha" />
                   </Button>
+
                 </TableCell>
               </TableRow>
             );
