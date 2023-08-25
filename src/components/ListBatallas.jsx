@@ -132,11 +132,12 @@ export default function DenseTable(b) {
                 <TableCell>
                   <Button
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                     size='small'
                     onClick={() => handleOpenCombate(batalla._id)}
                   >
-                    <img src="/lucha.png" alt="Lucha" />
+                    {/* <img src="/lucha.png" alt="Lucha" /> */}
+                    VS
                   </Button>
 
                 </TableCell>
