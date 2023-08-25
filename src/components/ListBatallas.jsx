@@ -131,7 +131,7 @@ export default function DenseTable(b) {
                 <TableCell style={{ color: "red" }} align="right">{peleadorRojo ? peleadorRojo.anillo : ''}</TableCell>
                 <TableCell>
                   <Button
-                    variant="text"
+                    variant="contained"
                     color="primary"
                     size='small'
                     onClick={() => handleOpenCombate(batalla._id)}
